@@ -3,6 +3,12 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# Custom
+.idea
+idea/
+.blockchain-env
+blockchain-env/
+
 # C extensions
 *.so
 
