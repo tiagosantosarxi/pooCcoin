@@ -72,6 +72,15 @@ class Block:
         return Block(**GENESIS_DATA)
 
     @staticmethod
+    def from_json(json_block):
+        """
+       Deserialize a block from json input
+       :param json_block: json input
+       :return: block instance
+       """
+        return Block(**json_block)
+
+    @staticmethod
     def adjust_difficulty(last_block, new_timestamp):
         """
         Calculate the adjusted difficulty according to the MINE_RATE.
