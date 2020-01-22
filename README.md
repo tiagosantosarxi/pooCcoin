@@ -18,3 +18,8 @@ Make sure to activate venv
 ```
 python3 -m backend.app
 ```
+**Run a Peer Instance**
+Make sure to activate venv 
+```
+export PEER=True && python3 -m backend.app
+```
