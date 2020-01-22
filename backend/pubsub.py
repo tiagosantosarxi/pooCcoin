@@ -15,6 +15,7 @@ pnconfig.publish_key = publish_key
 CHANNELS = {
     'TEST': 'TEST',
     'BLOCK': 'BLOCK',
+    'TRANSACTION': 'TRANSACTION'
 }
 
 

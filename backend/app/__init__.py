@@ -4,12 +4,15 @@ import requests
 
 from flask import Flask, jsonify
 
+from backend.wallet.wallet import Wallet
+from backend.wallet.transaction import Transaction
 from backend.blockchain.blockchain import Blockchain
 from backend.pubsub import PubSub
 
 app = Flask(__name__)
 blockchain = Blockchain()
 pubsub = PubSub(blockchain)
+wallet = Wallet()
 
 
 @app.route('/')
@@ -31,6 +34,17 @@ def route_blockchain_mine():
     return jsonify(block.to_json())
 
 
+@app.route('/wallet/transact', methods=['POST'])
+def route_wallet_transact():
+    transaction_data = request.get_json()
+    transaction = Transaction(
+        wallet,
+        transaction_data.get('recipient'),
+        transaction_data.get('amount')
+    )
+    return jsonify(transaction.to_json())
+
+
 ROOT_PORT = 5000
 PORT = ROOT_PORT
 
@@ -43,6 +57,5 @@ if os.environ.get('PEER') == 'True':
         print(f'Successfully synchronized the blockchain')
     except Exception as ex:
         print(f'Error synchronizing the blockchain: {ex}')
-
 
 app.run(port=PORT)
