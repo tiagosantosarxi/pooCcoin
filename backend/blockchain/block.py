@@ -119,8 +119,8 @@ class Block:
             block.timestamp,
             block.last_hash,
             block.data,
-            block.nonce,
-            block.difficulty
+            block.difficulty,
+            block.nonce
         )
 
         if block.hash != reconstructed_hash:

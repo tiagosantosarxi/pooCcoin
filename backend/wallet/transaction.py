@@ -12,12 +12,12 @@ class Transaction:
 
     def __init__(self, sender_wallet=None, recipient=None, amount=None, id=None, output=None, input=None):
         self.id = id or str(uuid.uuid4())
+        self.input = input or self.create_input(sender_wallet, self.output)
         self.output = output or self.create_output(
             sender_wallet,
             recipient,
             amount
         )
-        self.input = input or self.create_input(sender_wallet, self.output)
 
     def create_output(self, sender_wallet, recipient, amount):
         """
@@ -116,4 +116,4 @@ class Transaction:
         output = {
             miner_wallet.address: MINING_REWARD
         }
-        return Transaction(input=MINING_REWARD_INPUT, output=output)
+        return Transaction(output=output, input=MINING_REWARD_INPUT)
