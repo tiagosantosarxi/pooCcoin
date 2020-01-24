@@ -2,7 +2,7 @@ import os
 import random
 import requests
 
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 
 from backend.wallet.wallet import Wallet
 from backend.wallet.transaction import Transaction
@@ -29,16 +29,17 @@ def route_blockchain():
 
 @app.route('/blockchain/mine')
 def route_blockchain_mine():
-    transaction_data = ''
-    blockchain.add_block(transaction_data)
+    blockchain.add_block(transaction_pool.transaction_data())
     block = blockchain.chain[-1]
     pubsub.broadcast_block(block)
+    transaction_pool.clear_blockchain_transactions(blockchain)
     return jsonify(block.to_json())
 
 
 @app.route('/wallet/transact', methods=['POST'])
 def route_wallet_transact():
     transaction_data = request.get_json()
+    print(transaction_data)
     transaction = transaction_pool.existing_transaction(wallet.address)
     if transaction:
         transaction.update(

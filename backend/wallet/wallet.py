@@ -48,6 +48,25 @@ class Wallet:
         ).decode('utf-8')
 
     @staticmethod
+    def calculate_balance(blockchain, address):
+        """
+        Calculate the balance of the given address
+        scanning the transaction data within the blockchain
+        :param blockchain:
+        :param address:
+        :return:
+        """
+        balance = STARTING_BALANCE
+        for block in blockchain.chain:
+            for transaction in block.data:
+                if transaction.get('input').get('address') == address:
+                    # Any time the address conducts a new transaction it resets it's balance
+                    balance = transaction.get('output').get(address)
+                elif address in transaction.get('output'):
+                    balance += transaction.get('output').get(address)
+        return balance
+
+    @staticmethod
     def verify(public_key, data, signature):
         """
         Verify a signature based on the data and the public_key
