@@ -39,11 +39,19 @@ def route_blockchain_mine():
 @app.route('/wallet/transact', methods=['POST'])
 def route_wallet_transact():
     transaction_data = request.get_json()
-    transaction = Transaction(
-        wallet,
-        transaction_data.get('recipient'),
-        transaction_data.get('amount')
-    )
+    transaction = transaction_pool.existing_transaction(wallet.address)
+    if transaction:
+        transaction.update(
+            wallet,
+            transaction_data.get('recipient'),
+            transaction_data.get('amount')
+        )
+    else:
+        transaction = Transaction(
+            wallet,
+            transaction_data.get('recipient'),
+            transaction_data.get('amount')
+        )
 
     pubsub.broadcast_transaction(transaction)
 
