@@ -2,6 +2,7 @@ import uuid
 import time
 
 from backend.wallet.wallet import Wallet
+from backend.config import MINING_REWARD, MINING_REWARD_INPUT
 
 
 class Transaction:
@@ -90,6 +91,11 @@ class Transaction:
         :param transaction:
         :return:
         """
+        if transaction.input == MINING_REWARD_INPUT:
+            if list(transaction.output.values()) != [MINING_REWARD]:
+                raise Exception('Invalid mining reward')
+            # Mining reward is not signed to we need to return right away
+            return
         output_total = sum(transaction.output.values())
         if transaction.input.get('amount') != output_total:
             raise Exception('Invalid Transaction output values')
@@ -99,3 +105,15 @@ class Transaction:
                 transaction.input.get('signature')
         ):
             raise Exception('Invalid Signature')
+
+    @staticmethod
+    def reward_transaction(miner_wallet):
+        """
+        Generate a reward transaction to award to the miner
+        :param miner_wallet:
+        :return:
+        """
+        output = {
+            miner_wallet.address: MINING_REWARD
+        }
+        return Transaction(input=MINING_REWARD_INPUT, output=output)
