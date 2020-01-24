@@ -18,7 +18,12 @@ Make sure to activate venv
 ```
 python3 -m backend.app
 ```
-**Run a Peer Instance**
+**Start Mining**
+Make sure to activate venv 
+```
+python3 -m backend.scripts.mining
+```
+**Run a Peer Instance(Testing Purposes)**
 Make sure to activate venv 
 ```
 export PEER=True && python3 -m backend.app
