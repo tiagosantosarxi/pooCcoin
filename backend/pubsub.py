@@ -78,6 +78,7 @@ class PubSub:
         """
         self.publish(CHANNELS['TRANSACTION'], transaction.to_json())
 
+
 # def main():
 #     pubsub = PubSub()
 #     time.sleep(1)
